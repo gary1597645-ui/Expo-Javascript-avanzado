@@ -1,0 +1,171 @@
+{
+    "info": {
+        "name": "CampusHub - Avance 1",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "1. Listar Catálogo (Laboratorios)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/laboratorios",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "laboratorios"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "2. Ver Detalle de Laboratorio",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/laboratorios/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "laboratorios",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "3. Crear Laboratorio",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"nombre\": \"Lab Prueba\",\n  \"sede\": \"Lima Centro\",\n  \"capacidad\": 20,\n  \"equipos\": [],\n  \"estado\": \"disponible\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/laboratorios",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "laboratorios"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "4. Listar Reservas del Usuario",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/reservas?usuarioId=3",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "reservas"
+                    ],
+                    "query": [
+                        {
+                            "key": "usuarioId",
+                            "value": "3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "5. Cambiar Estado de Reserva",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"estado\": \"aprobada\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/reservas/2",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "reservas",
+                        "2"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "6. Actualizar Laboratorio",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"nombre\": \"Lab A-301 actualizado\",\n  \"sede\": \"Lima Centro\",\n  \"capacidad\": 30,\n  \"equipos\": [\"PC i7\", \"Proyector\"],\n  \"estado\": \"disponible\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/laboratorios/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "laboratorios",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "7. Eliminar Laboratorio",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/laboratorios/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "laboratorios",
+                        "1"
+                    ]
+                }
+            }
+        }
+    ]
+}
