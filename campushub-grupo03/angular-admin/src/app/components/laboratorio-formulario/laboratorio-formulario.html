@@ -1,0 +1,53 @@
+<div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">{{ esEdicion ? 'Editar' : 'Nuevo' }} Laboratorio</h4>
+    </div>
+    <div class="card-body">
+        <!-- Vinculación del formulario reactivo -->
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre del Laboratorio</label>
+                <input type="text" class="form-control" formControlName="nombre" placeholder="Ej: Lab A-301"
+                    [ngClass]="{'is-invalid': form.get('nombre')?.invalid && form.get('nombre')?.touched}">
+                <div class="invalid-feedback">
+                    El nombre es obligatorio y debe tener el formato "Lab Letra-Número" (Ej: Lab A-301).
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sede</label>
+                <select class="form-select" formControlName="sede"
+                    [ngClass]="{'is-invalid': form.get('sede')?.invalid && form.get('sede')?.touched}">
+                    <option value="">Seleccione una sede</option>
+                    <option value="Lima Centro">Lima Centro</option>
+                    <option value="Lima Sur">Lima Sur</option>
+                    <option value="Arequipa">Arequipa</option>
+                </select>
+                <div class="invalid-feedback">La sede es requerida.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Capacidad (1-60)</label>
+                <input type="number" class="form-control" formControlName="capacidad"
+                    [ngClass]="{'is-invalid': form.get('capacidad')?.invalid && form.get('capacidad')?.touched}">
+                <div class="invalid-feedback">La capacidad es obligatoria y debe estar entre 1 y 60.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select class="form-select" formControlName="estado">
+                    <option value="disponible">Disponible</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <a routerLink="/laboratorios" class="btn btn-secondary">Cancelar</a>
+                <!-- El botón se deshabilita automáticamente si hay errores -->
+                <button type="submit" class="btn btn-success" [disabled]="form.invalid">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<h2 class="mb-3">Gestión de Reservas</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Motivo</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let res of reservas">
+                <td><span class="badge bg-secondary">{{ res.codigo }}</span></td>
+                <td>{{ res.fecha }}</td>
+                <td>{{ res.horaInicio }} - {{ res.horaFin }}</td>
+                <td>{{ res.motivo }}</td>
+                <!-- AQUÍ SE APLICA EL PIPE PERSONALIZADO -->
+                <td class="fw-bold">{{ res.estado | estadoReserva }}</td>
+            </tr>
+            <tr *ngIf="reservas.length === 0">
+                <td colspan="5" class="text-center py-4 text-muted">No hay reservas registradas.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
