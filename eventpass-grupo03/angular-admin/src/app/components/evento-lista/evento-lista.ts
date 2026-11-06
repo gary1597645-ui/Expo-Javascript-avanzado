@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -20,7 +20,8 @@ export class EventoLista implements OnInit {
 
   constructor(
     private eventoService: EventoService,
-    private inscripcionService: InscripcionService
+    private inscripcionService: InscripcionService,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +36,7 @@ export class EventoLista implements OnInit {
       next: (datos) => {
         this.eventos = datos.eventos;
         this.inscripciones = datos.inscripciones;
+        this.changeDetector.detectChanges();
       },
       error: (err) => console.error("Error al obtener eventos:", err)
     });
