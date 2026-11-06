@@ -1,0 +1,52 @@
+<div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">{{ esEdicion ? 'Editar' : 'Nuevo' }} Evento</h4>
+    </div>
+    <div class="card-body">
+        <!-- Vinculación del formulario reactivo -->
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre del Evento</label>
+                <input type="text" class="form-control" formControlName="nombre" placeholder="Ej: Conferencia de JavaScript"
+                    [ngClass]="{'is-invalid': form.get('nombre')?.invalid && form.get('nombre')?.touched}">
+                <div class="invalid-feedback">
+                    Ingresa un nombre de evento de entre 3 y 60 caracteres.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Lugar</label>
+                <input type="text" class="form-control" formControlName="lugar"
+                    [ngClass]="{'is-invalid': form.get('lugar')?.invalid && form.get('lugar')?.touched}">
+                <div class="invalid-feedback">El lugar es requerido.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" formControlName="fecha"
+                    [ngClass]="{'is-invalid': form.get('fecha')?.invalid && form.get('fecha')?.touched}">
+                <div class="invalid-feedback">La fecha es requerida.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Aforo máximo</label>
+                <input type="number" class="form-control" formControlName="capacidadMax"
+                    [ngClass]="{'is-invalid': form.get('capacidadMax')?.invalid && form.get('capacidadMax')?.touched}">
+                <div class="invalid-feedback">El aforo debe estar entre 1 y 10000.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea class="form-control" rows="3" formControlName="descripcion"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <a routerLink="/eventos" class="btn btn-secondary">Cancelar</a>
+                <!-- El botón se deshabilita automáticamente si hay errores -->
+                <button type="submit" class="btn btn-success" [disabled]="form.invalid">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+</div>

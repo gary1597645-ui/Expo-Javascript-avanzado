@@ -1,0 +1,27 @@
+<h2 class="mb-3">Inscripciones</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Evento</th>
+                <th>Estudiante</th>
+                <th>Fecha de inscripción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let inscripcion of inscripciones">
+                <td><span class="badge bg-secondary">{{ inscripcion.codigo }}</span></td>
+                <td>{{ inscripcion.eventoNombre || 'Evento #' + inscripcion.eventoId }}</td>
+                <td>{{ inscripcion.estudianteNombre || 'Estudiante #' + inscripcion.estudianteId }}</td>
+                <td>{{ inscripcion.fechaInscripcion }}</td>
+                <td class="fw-bold">{{ inscripcion.estado | estadoInscripcion }}</td>
+            </tr>
+            <tr *ngIf="inscripciones.length === 0">
+                <td colspan="5" class="text-center py-4 text-muted">No hay inscripciones registradas.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

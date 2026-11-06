@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "EventPass - API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar eventos",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/eventos"
+      }
+    },
+    {
+      "name": "Ver evento",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/eventos/1"
+      }
+    },
+    {
+      "name": "Crear evento",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Encuentro de tecnologia\",\n  \"capacidadMax\": 50,\n  \"fecha\": \"2026-12-20\",\n  \"lugar\": \"Auditorio\",\n  \"descripcion\": \"Evento de prueba\"\n}"
+        },
+        "url": "http://localhost:3000/eventos"
+      }
+    },
+    {
+      "name": "Actualizar evento",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Encuentro de tecnologia actualizado\",\n  \"capacidadMax\": 60,\n  \"fecha\": \"2026-12-20\",\n  \"lugar\": \"Auditorio\",\n  \"descripcion\": \"Evento actualizado\"\n}"
+        },
+        "url": "http://localhost:3000/eventos/1"
+      }
+    },
+    {
+      "name": "Eliminar evento",
+      "request": {
+        "method": "DELETE",
+        "url": "http://localhost:3000/eventos/1"
+      }
+    },
+    {
+      "name": "Listar inscripciones",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/inscripciones"
+      }
+    }
+  ]
+}

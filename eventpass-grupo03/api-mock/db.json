@@ -1,0 +1,105 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Ana Torres",
+      "correo": "U20231234@utp.edu.pe",
+      "codigo": "U20231234",
+      "rol": "estudiante"
+    },
+    {
+      "id": 2,
+      "nombre": "Luis Quispe",
+      "correo": "U20231235@utp.edu.pe",
+      "codigo": "U20231235",
+      "rol": "estudiante"
+    },
+    {
+      "id": 3,
+      "nombre": "Maria Gomez",
+      "correo": "U20231236@utp.edu.pe",
+      "codigo": "U20231236",
+      "rol": "estudiante"
+    },
+    {
+      "id": 4,
+      "nombre": "Carlos Ruiz",
+      "correo": "U20231237@utp.edu.pe",
+      "codigo": "U20231237",
+      "rol": "estudiante"
+    }
+  ],
+  "eventos": [
+    {
+      "id": 1,
+      "nombre": "Conferencia de JavaScript",
+      "capacidadMax": 120,
+      "fecha": "2026-12-10",
+      "lugar": "Auditorio Principal",
+      "descripcion": "Charla sobre JavaScript moderno y desarrollo web."
+    },
+    {
+      "id": 2,
+      "nombre": "Taller de Angular",
+      "capacidadMax": 30,
+      "fecha": "2026-12-12",
+      "lugar": "Centro de convenciones",
+      "descripcion": "Taller practico de componentes y servicios."
+    },
+    {
+      "id": 3,
+      "nombre": "Feria de proyectos",
+      "capacidadMax": 80,
+      "fecha": "2026-12-15",
+      "lugar": "Patio Central",
+      "descripcion": "Exhibicion de proyectos de estudiantes."
+    }
+  ],
+  "inscripciones": [
+    {
+      "id": 1,
+      "codigo": "INS-0001",
+      "eventoId": 1,
+      "estudianteId": 1,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-01",
+      "estado": "confirmada"
+    },
+    {
+      "id": 2,
+      "codigo": "INS-0002",
+      "eventoId": 1,
+      "estudianteId": 2,
+      "estudianteNombre": "Luis Quispe",
+      "fechaInscripcion": "2026-11-02",
+      "estado": "confirmada"
+    },
+    {
+      "id": 3,
+      "codigo": "INS-0003",
+      "eventoId": 1,
+      "estudianteId": 3,
+      "estudianteNombre": "Maria Gomez",
+      "fechaInscripcion": "2026-11-03",
+      "estado": "en_espera"
+    },
+    {
+      "id": 4,
+      "codigo": "INS-0004",
+      "eventoId": 2,
+      "estudianteId": 4,
+      "estudianteNombre": "Carlos Ruiz",
+      "fechaInscripcion": "2026-11-04",
+      "estado": "confirmada"
+    },
+    {
+      "id": 5,
+      "codigo": "INS-0005",
+      "eventoId": 3,
+      "estudianteId": 1,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-05",
+      "estado": "cancelada"
+    }
+  ]
+}
