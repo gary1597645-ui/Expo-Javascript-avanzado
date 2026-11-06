@@ -1,5 +1,15 @@
 # EventPass
 
+## Integrantes
+
+- Gary Manuel Mautino Paucar 
+- José Mauricio Terrazos Espinal  
+- Jefferson Molleapaza Cosi
+- joel Pacheco Quispe Orlando
+-  Carpio caceres Joseph Joao
+**Dominio:** EventPass (Eventos / Inscripciones / aforo)
+**Uso de IA:** Se utilizo IA como apoyo para revisar, adaptar y probar partes del codigo del proyecto.
+
 Panel administrativo de ejemplo para gestionar eventos y consultar inscripciones. La API usa `json-server`; la regla de aforo cuenta las inscripciones con estado `confirmada`.
 
 ## Iniciar la API

@@ -68,6 +68,17 @@ test('Evento permite inscripciones mientras haya aforo confirmado', () => {
     assert.equal(evento.tieneCupo(inscripciones), true);
 });
 
+test('Inscripcion ocupa cupo solo cuando esta confirmada', () => {
+    const confirmada = new Inscripcion({
+        eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'confirmada'
+    });
+    const enEspera = new Inscripcion({
+        eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'en_espera'
+    });
+    assert.equal(confirmada.ocupaCupo(), true);
+    assert.equal(enEspera.ocupaCupo(), false);
+});
+
 test('Evento no permite nuevas inscripciones cuando el aforo esta completo', () => {
     const evento = new Evento({ id: 1, nombre: 'Charla', capacidadMax: 2, fecha: '2026-12-01', lugar: 'Aula 1' });
     const inscripciones = [

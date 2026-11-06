@@ -68,4 +68,8 @@ export class Inscripcion {
     get estudianteNombre() { return this._estudianteNombre; }
     get fechaInscripcion() { return this._fechaInscripcion; }
     get estado() { return this._estado; }
+
+    ocupaCupo() {
+        return this.estado === 'confirmada';
+    }
 }

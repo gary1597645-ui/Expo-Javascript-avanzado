@@ -8,21 +8,44 @@
       "name": "Listar eventos",
       "request": {
         "method": "GET",
+        "header": [],
         "url": "http://localhost:3000/eventos"
       }
     },
     {
-      "name": "Ver evento",
+      "name": "Ver evento 1",
       "request": {
         "method": "GET",
+        "header": [],
         "url": "http://localhost:3000/eventos/1"
+      }
+    },
+    {
+      "name": "Buscar eventos por texto",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/eventos?q=JavaScript"
+      }
+    },
+    {
+      "name": "Buscar eventos por lugar",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/eventos?lugar=Auditorio%20Principal"
       }
     },
     {
       "name": "Crear evento",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"nombre\": \"Encuentro de tecnologia\",\n  \"capacidadMax\": 50,\n  \"fecha\": \"2026-12-20\",\n  \"lugar\": \"Auditorio\",\n  \"descripcion\": \"Evento de prueba\"\n}"
@@ -31,29 +54,94 @@
       }
     },
     {
-      "name": "Actualizar evento",
+      "name": "Actualizar evento 1",
       "request": {
         "method": "PUT",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre\": \"Encuentro de tecnologia actualizado\",\n  \"capacidadMax\": 60,\n  \"fecha\": \"2026-12-20\",\n  \"lugar\": \"Auditorio\",\n  \"descripcion\": \"Evento actualizado\"\n}"
+          "raw": "{\n  \"nombre\": \"Conferencia de JavaScript actualizada\",\n  \"capacidadMax\": 5,\n  \"fecha\": \"2026-12-10\",\n  \"lugar\": \"Auditorio Principal\",\n  \"descripcion\": \"Conferencia actualizada\"\n}"
         },
         "url": "http://localhost:3000/eventos/1"
       }
     },
     {
-      "name": "Eliminar evento",
+      "name": "Eliminar evento 1",
       "request": {
         "method": "DELETE",
+        "header": [],
         "url": "http://localhost:3000/eventos/1"
       }
     },
     {
-      "name": "Listar inscripciones",
+      "name": "Inscripciones de estudiante 1",
       "request": {
         "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/inscripciones?estudianteId=1"
+      }
+    },
+    {
+      "name": "Inscripciones de evento 1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/inscripciones?eventoId=1"
+      }
+    },
+    {
+      "name": "Crear inscripcion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"INS-0021\",\n  \"eventoId\": 3,\n  \"estudianteId\": 3,\n  \"estudianteNombre\": \"Ana Torres\",\n  \"fechaInscripcion\": \"2026-11-21\",\n  \"estado\": \"confirmada\"\n}"
+        },
         "url": "http://localhost:3000/inscripciones"
+      }
+    },
+    {
+      "name": "Eliminar inscripcion 1",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "http://localhost:3000/inscripciones/1"
+      }
+    },
+    {
+      "name": "Ver usuario 1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/usuarios/1"
+      }
+    },
+    {
+      "name": "Cancelar inscripcion 1",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"estado\": \"cancelada\"\n}"
+        },
+        "url": "http://localhost:3000/inscripciones/1"
       }
     }
   ]
