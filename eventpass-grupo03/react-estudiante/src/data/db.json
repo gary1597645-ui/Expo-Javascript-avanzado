@@ -1,0 +1,39 @@
+{
+    "eventos": [
+        {
+            "id": 1,
+            "nombre": "Hackathon UTP 2026",
+            "categoria": "Tecnología",
+            "aforoMaximo": 50,
+            "inscritosActuales": 48,
+            "estado": "disponible"
+        },
+        {
+            "id": 2,
+            "nombre": "Seminario de Gestión de Proyectos",
+            "categoria": "Negocios",
+            "aforoMaximo": 120,
+            "inscritosActuales": 120,
+            "estado": "lleno"
+        },
+        {
+            "id": 3,
+            "nombre": "Taller de React Avanzado",
+            "categoria": "Tecnología",
+            "aforoMaximo": 30,
+            "inscritosActuales": 15,
+            "estado": "disponible"
+        }
+    ],
+    "inscripciones": [
+        {
+            "id": 1,
+            "codigo": "INS-0001",
+            "eventoId": 1,
+            "usuarioId": 1,
+            "fecha": "2026-11-20",
+            "estado": "aprobada",
+            "creadoEn": "2026-11-10T10:00:00Z"
+        }
+    ]
+}
