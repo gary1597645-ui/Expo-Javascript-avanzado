@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { InscripcionesProvider } from './context/InscripcionesContext';
 
-// Importación de páginas (crea estos archivos básicos en src/pages)
 import Inicio from './pages/Inicio';
 import Catalogo from './pages/Catalogo';
 import EventoDetalle from './pages/EventoDetalle';
@@ -13,10 +13,9 @@ import Login from './pages/Login';
 import NoEncontrado from './pages/NoEncontrado';
 import Navbar from './components/Navbar';
 
-// Componente para proteger rutas
 const RutaProtegida = ({ children }) => {
   const { user } = useContext(AuthContext);
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/login" replace />;
   return children;
 };
 
@@ -28,14 +27,14 @@ function AppRoutes() {
       <Route path="/catalogo/:id" element={<EventoDetalle />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Rutas Protegidas */}
-      <Route path="/mis-inscripciones" element={
-        <RutaProtegida><MisInscripciones /></RutaProtegida>
-      } />
-      <Route path="/nueva-inscripcion" element={
-        <RutaProtegida><NuevaInscripcion /></RutaProtegida>
-      } />
-
+      <Route
+        path="/mis-inscripciones"
+        element={<RutaProtegida><MisInscripciones /></RutaProtegida>}
+      />
+      <Route
+        path="/nueva-inscripcion"
+        element={<RutaProtegida><NuevaInscripcion /></RutaProtegida>}
+      />
       <Route path="*" element={<NoEncontrado />} />
     </Routes>
   );
@@ -45,12 +44,14 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <BrowserRouter>
-          <Navbar />
-          <div className="container mt-4">
-            <AppRoutes />
-          </div>
-        </BrowserRouter>
+        <InscripcionesProvider>
+          <BrowserRouter>
+            <Navbar />
+            <main className="container mt-4">
+              <AppRoutes />
+            </main>
+          </BrowserRouter>
+        </InscripcionesProvider>
       </ThemeProvider>
     </AuthProvider>
   );

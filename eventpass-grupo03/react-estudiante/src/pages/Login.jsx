@@ -1,21 +1,25 @@
-import { useState, useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = 'Iniciar sesión - EventPass';
+    }, []);
+
     const manejarLogin = (e) => {
         e.preventDefault();
-        // Simulación estática para el Avance 2.
-        if (correo === 'u20231234@utp.edu.pe' && password === 'est123') {
-            login({ id: 3, nombre: 'Jefferson Molleapaza', correo: correo, rol: 'estudiante' });
+        const resultado = login(correo, password);
+        if (resultado.ok) {
             navigate('/catalogo');
         } else {
-            alert('Credenciales incorrectas. Usa: u20231234@utp.edu.pe / est123');
+            setError(resultado.error);
         }
     };
 
@@ -25,10 +29,12 @@ export default function Login() {
                 <div className="card shadow">
                     <div className="card-body">
                         <h3 className="card-title text-center mb-4">Iniciar Sesión</h3>
+                        {error && <div className="alert alert-danger">{error}</div>}
                         <form onSubmit={manejarLogin}>
                             <div className="mb-3">
-                                <label className="form-label">Correo Institucional</label>
+                                <label className="form-label" htmlFor="correo-login">Correo Institucional</label>
                                 <input
+                                    id="correo-login"
                                     type="email"
                                     className="form-control"
                                     value={correo}
@@ -37,8 +43,9 @@ export default function Login() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Contraseña</label>
+                                <label className="form-label" htmlFor="password-login">Contraseña</label>
                                 <input
+                                    id="password-login"
                                     type="password"
                                     className="form-control"
                                     value={password}
@@ -48,6 +55,7 @@ export default function Login() {
                             </div>
                             <button type="submit" className="btn btn-primary w-100">Ingresar</button>
                         </form>
+                        <p className="small text-muted mt-3 mb-0">Ejemplo: ana.torres@utp.edu.pe / est123</p>
                     </div>
                 </div>
             </div>

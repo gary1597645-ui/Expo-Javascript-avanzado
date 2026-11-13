@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "sync-core": "node -e \"require('node:fs').cpSync('../core-js','src/core',{recursive:true})\"",
+    "predev": "npm run sync-core",
+    "prebuild": "npm run sync-core",
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",

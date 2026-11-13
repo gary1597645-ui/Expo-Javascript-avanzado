@@ -1,39 +1,316 @@
 {
-    "eventos": [
-        {
-            "id": 1,
-            "nombre": "Hackathon UTP 2026",
-            "categoria": "Tecnología",
-            "aforoMaximo": 50,
-            "inscritosActuales": 48,
-            "estado": "disponible"
-        },
-        {
-            "id": 2,
-            "nombre": "Seminario de Gestión de Proyectos",
-            "categoria": "Negocios",
-            "aforoMaximo": 120,
-            "inscritosActuales": 120,
-            "estado": "lleno"
-        },
-        {
-            "id": 3,
-            "nombre": "Taller de React Avanzado",
-            "categoria": "Tecnología",
-            "aforoMaximo": 30,
-            "inscritosActuales": 15,
-            "estado": "disponible"
-        }
-    ],
-    "inscripciones": [
-        {
-            "id": 1,
-            "codigo": "INS-0001",
-            "eventoId": 1,
-            "usuarioId": 1,
-            "fecha": "2026-11-20",
-            "estado": "aprobada",
-            "creadoEn": "2026-11-10T10:00:00Z"
-        }
-    ]
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Laura Medina",
+      "correo": "laura.medina@utp.edu.pe",
+      "codigo": "U10000001",
+      "rol": "admin",
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "nombre": "Diego Rojas",
+      "correo": "diego.rojas@utp.edu.pe",
+      "codigo": "U10000002",
+      "rol": "admin",
+      "password": "admin123"
+    },
+    {
+      "id": 3,
+      "nombre": "Ana Torres",
+      "correo": "ana.torres@utp.edu.pe",
+      "codigo": "U20231234",
+      "rol": "estudiante",
+      "password": "est123"
+    },
+    {
+      "id": 4,
+      "nombre": "Luis Quispe",
+      "correo": "luis.quispe@utp.edu.pe",
+      "codigo": "U20231235",
+      "rol": "estudiante",
+      "password": "est123"
+    },
+    {
+      "id": 5,
+      "nombre": "Maria Gomez",
+      "correo": "maria.gomez@utp.edu.pe",
+      "codigo": "U20231236",
+      "rol": "estudiante",
+      "password": "est123"
+    },
+    {
+      "id": 6,
+      "nombre": "Carlos Ruiz",
+      "correo": "carlos.ruiz@utp.edu.pe",
+      "codigo": "U20231237",
+      "rol": "estudiante",
+      "password": "est123"
+    },
+    {
+      "id": 7,
+      "nombre": "Sofia Vega",
+      "correo": "sofia.vega@utp.edu.pe",
+      "codigo": "U20231238",
+      "rol": "estudiante",
+      "password": "est123"
+    },
+    {
+      "id": 8,
+      "nombre": "Pedro Silva",
+      "correo": "pedro.silva@utp.edu.pe",
+      "codigo": "U20231239",
+      "rol": "estudiante",
+      "password": "est123"
+    }
+  ],
+  "eventos": [
+    {
+      "id": 1,
+      "nombre": "Conferencia de JavaScript",
+      "capacidadMax": 5,
+      "fecha": "2026-12-10",
+      "lugar": "Auditorio Principal",
+      "descripcion": "Charla sobre JavaScript moderno y desarrollo web."
+    },
+    {
+      "id": 2,
+      "nombre": "Taller de Angular",
+      "capacidadMax": 10,
+      "fecha": "2026-12-12",
+      "lugar": "Laboratorio de Informatica",
+      "descripcion": "Taller practico de componentes y servicios."
+    },
+    {
+      "id": 3,
+      "nombre": "Feria de proyectos",
+      "capacidadMax": 80,
+      "fecha": "2026-12-15",
+      "lugar": "Patio Central",
+      "descripcion": "Exhibicion de proyectos de estudiantes."
+    },
+    {
+      "id": 4,
+      "nombre": "Hackaton universitaria",
+      "capacidadMax": 60,
+      "fecha": "2026-12-18",
+      "lugar": "Centro de convenciones",
+      "descripcion": "Encuentro para crear soluciones tecnologicas."
+    },
+    {
+      "id": 5,
+      "nombre": "Charla de inteligencia artificial",
+      "capacidadMax": 50,
+      "fecha": "2026-12-20",
+      "lugar": "Auditorio Principal",
+      "descripcion": "Introduccion a la inteligencia artificial."
+    },
+    {
+      "id": 6,
+      "nombre": "Taller de diseno UX",
+      "capacidadMax": 35,
+      "fecha": "2026-12-22",
+      "lugar": "Sala de Innovacion",
+      "descripcion": "Principios de diseno de experiencia de usuario."
+    },
+    {
+      "id": 7,
+      "nombre": "Encuentro de emprendimiento",
+      "capacidadMax": 100,
+      "fecha": "2026-12-27",
+      "lugar": "Centro de convenciones",
+      "descripcion": "Ideas y experiencias de emprendimiento estudiantil."
+    },
+    {
+      "id": 8,
+      "nombre": "Taller de desarrollo web",
+      "capacidadMax": 40,
+      "fecha": "2026-12-29",
+      "lugar": "Laboratorio de Informatica",
+      "descripcion": "Practica de desarrollo de aplicaciones web."
+    }
+  ],
+  "inscripciones": [
+    {
+      "id": 1,
+      "codigo": "INS-0001",
+      "eventoId": 1,
+      "estudianteId": 3,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-01",
+      "estado": "confirmada"
+    },
+    {
+      "id": 2,
+      "codigo": "INS-0002",
+      "eventoId": 1,
+      "estudianteId": 4,
+      "estudianteNombre": "Luis Quispe",
+      "fechaInscripcion": "2026-11-02",
+      "estado": "confirmada"
+    },
+    {
+      "id": 3,
+      "codigo": "INS-0003",
+      "eventoId": 1,
+      "estudianteId": 5,
+      "estudianteNombre": "Maria Gomez",
+      "fechaInscripcion": "2026-11-03",
+      "estado": "confirmada"
+    },
+    {
+      "id": 4,
+      "codigo": "INS-0004",
+      "eventoId": 1,
+      "estudianteId": 6,
+      "estudianteNombre": "Carlos Ruiz",
+      "fechaInscripcion": "2026-11-04",
+      "estado": "confirmada"
+    },
+    {
+      "id": 5,
+      "codigo": "INS-0005",
+      "eventoId": 1,
+      "estudianteId": 7,
+      "estudianteNombre": "Sofia Vega",
+      "fechaInscripcion": "2026-11-05",
+      "estado": "confirmada"
+    },
+    {
+      "id": 6,
+      "codigo": "INS-0006",
+      "eventoId": 2,
+      "estudianteId": 3,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-06",
+      "estado": "confirmada"
+    },
+    {
+      "id": 7,
+      "codigo": "INS-0007",
+      "eventoId": 2,
+      "estudianteId": 4,
+      "estudianteNombre": "Luis Quispe",
+      "fechaInscripcion": "2026-11-07",
+      "estado": "confirmada"
+    },
+    {
+      "id": 8,
+      "codigo": "INS-0008",
+      "eventoId": 2,
+      "estudianteId": 5,
+      "estudianteNombre": "Maria Gomez",
+      "fechaInscripcion": "2026-11-08",
+      "estado": "confirmada"
+    },
+    {
+      "id": 9,
+      "codigo": "INS-0009",
+      "eventoId": 2,
+      "estudianteId": 6,
+      "estudianteNombre": "Carlos Ruiz",
+      "fechaInscripcion": "2026-11-09",
+      "estado": "confirmada"
+    },
+    {
+      "id": 10,
+      "codigo": "INS-0010",
+      "eventoId": 2,
+      "estudianteId": 7,
+      "estudianteNombre": "Sofia Vega",
+      "fechaInscripcion": "2026-11-10",
+      "estado": "confirmada"
+    },
+    {
+      "id": 11,
+      "codigo": "INS-0011",
+      "eventoId": 2,
+      "estudianteId": 8,
+      "estudianteNombre": "Pedro Silva",
+      "fechaInscripcion": "2026-11-11",
+      "estado": "confirmada"
+    },
+    {
+      "id": 12,
+      "codigo": "INS-0012",
+      "eventoId": 2,
+      "estudianteId": 3,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-12",
+      "estado": "confirmada"
+    },
+    {
+      "id": 13,
+      "codigo": "INS-0013",
+      "eventoId": 2,
+      "estudianteId": 4,
+      "estudianteNombre": "Luis Quispe",
+      "fechaInscripcion": "2026-11-13",
+      "estado": "confirmada"
+    },
+    {
+      "id": 14,
+      "codigo": "INS-0014",
+      "eventoId": 2,
+      "estudianteId": 5,
+      "estudianteNombre": "Maria Gomez",
+      "fechaInscripcion": "2026-11-14",
+      "estado": "confirmada"
+    },
+    {
+      "id": 15,
+      "codigo": "INS-0015",
+      "eventoId": 3,
+      "estudianteId": 6,
+      "estudianteNombre": "Carlos Ruiz",
+      "fechaInscripcion": "2026-11-15",
+      "estado": "confirmada"
+    },
+    {
+      "id": 16,
+      "codigo": "INS-0016",
+      "eventoId": 4,
+      "estudianteId": 7,
+      "estudianteNombre": "Sofia Vega",
+      "fechaInscripcion": "2026-11-16",
+      "estado": "confirmada"
+    },
+    {
+      "id": 17,
+      "codigo": "INS-0017",
+      "eventoId": 5,
+      "estudianteId": 8,
+      "estudianteNombre": "Pedro Silva",
+      "fechaInscripcion": "2026-11-17",
+      "estado": "confirmada"
+    },
+    {
+      "id": 18,
+      "codigo": "INS-0018",
+      "eventoId": 6,
+      "estudianteId": 3,
+      "estudianteNombre": "Ana Torres",
+      "fechaInscripcion": "2026-11-18",
+      "estado": "en_espera"
+    },
+    {
+      "id": 19,
+      "codigo": "INS-0019",
+      "eventoId": 7,
+      "estudianteId": 4,
+      "estudianteNombre": "Luis Quispe",
+      "fechaInscripcion": "2026-11-19",
+      "estado": "cancelada"
+    },
+    {
+      "id": 20,
+      "codigo": "INS-0020",
+      "eventoId": 8,
+      "estudianteId": 5,
+      "estudianteNombre": "Maria Gomez",
+      "fechaInscripcion": "2026-11-20",
+      "estado": "en_espera"
+    }
+  ]
 }

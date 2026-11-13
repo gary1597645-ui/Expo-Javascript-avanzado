@@ -1,122 +1,106 @@
-import { useState, useRef, useEffect, useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-// IMPORTANTE: Aquí debes importar tu clase y validadores reales de la carpeta core-js de tu monorepo.
-// Subimos 3 niveles: components -> src -> react-estudiante -> y entramos a core-js
-import { validarFecha } from '../../../core-js/validadores.js';
-// Importa tu clase Evento (y la clase Inscripcion si la tienes definida ahí)
-import { Evento } from '../../../core-js/modelos.js';
+import { InscripcionesContext } from '../context/InscripcionesContext';
+import { esCorreoUTP, esFecha } from '../core/validadores.js';
+import { Evento } from '../core/modelos.js';
 
-import { useState, useRef, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-// 1. Quitamos 'esFecha' porque solo usaremos 'validarFecha'
-import { validarFecha } from '../../../core-js/validadores.js';
-// 2. Importamos la clase Evento
-import { Evento } from '../../../core-js/modelos.js';
+const hoy = () => {
+    const fecha = new Date();
+    fecha.setMinutes(fecha.getMinutes() - fecha.getTimezoneOffset());
+    return fecha.toISOString().slice(0, 10);
+};
 
 export default function FormularioInscripcion({ evento }) {
     const { user } = useContext(AuthContext);
-    const inputRef = useRef(null);
-
-    const [cantidad, setCantidad] = useState(1);
-    const [motivo, setMotivo] = useState('');
+    const { inscripciones, crear } = useContext(InscripcionesContext);
+    const correoRef = useRef(null);
+    const [correo, setCorreo] = useState(user?.correo ?? '');
+    const [fecha, setFecha] = useState(hoy());
     const [errores, setErrores] = useState({});
-    const [mensajeExito, setMensajeExito] = useState('');
+    const [exito, setExito] = useState('');
 
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
+        correoRef.current?.focus();
     }, []);
 
-    const manejarEnvio = (e) => {
+    const enviar = (e) => {
         e.preventDefault();
         const nuevosErrores = {};
+        if (!esCorreoUTP(correo)) nuevosErrores.correo = 'Ingresa un correo @utp.edu.pe válido.';
+        else if (correo.toLowerCase() !== user.correo.toLowerCase()) {
+            nuevosErrores.correo = 'Usa el correo de la sesión iniciada.';
+        }
+        if (!esFecha(fecha)) nuevosErrores.fecha = 'La fecha debe tener formato AAAA-MM-DD.';
+        else if (fecha < hoy() || fecha > evento.fecha) {
+            nuevosErrores.fecha = 'La fecha debe ser actual y no superar la fecha del evento.';
+        }
 
-        // 1. Validaciones usando tu core-js (Aquí usamos los imports)
         try {
-            // Utilizamos la clase Evento importada. Esto elimina el color gris
-            // y cumple con la rúbrica de reutilizar la clase de la Unidad 1.
-            const eventoCore = new Evento({
-                id: evento.id,
-                nombre: evento.nombre,
-                capacidadMax: evento.aforoMaximo,
-                fecha: new Date().toISOString().split('T')[0], // Pasamos la fecha actual
-                lugar: 'Sede UTP'
-            });
-
-            // Usamos tu validador de fecha
-            validarFecha(eventoCore.fecha);
-
+            const eventoCore = new Evento(evento);
+            if (!eventoCore.tieneCupo(inscripciones)) {
+                nuevosErrores.aforo = 'El evento ya no tiene cupos disponibles.';
+            } else if (inscripciones.some((inscripcion) => (
+                inscripcion.eventoId === evento.id
+                && inscripcion.estudianteId === user.id
+                && inscripcion.estado !== 'cancelada'
+            ))) {
+                nuevosErrores.aforo = 'Ya tienes una inscripción activa en este evento.';
+            }
         } catch (error) {
-            nuevosErrores.sistema = error.message;
-        }
-
-        if (motivo.trim().length < 5) {
-            nuevosErrores.motivo = 'El motivo debe tener al menos 5 caracteres.';
-        }
-
-        // 2. Validación de la regla de negocio: Aforo Máximo
-        const espaciosDisponibles = evento.aforoMaximo - evento.inscritosActuales;
-        if (cantidad > espaciosDisponibles) {
-            nuevosErrores.cantidad = `No hay suficiente aforo. Solo quedan ${espaciosDisponibles} cupos.`;
-        } else if (cantidad < 1) {
-            nuevosErrores.cantidad = 'Debe inscribir al menos a 1 persona.';
+            nuevosErrores.aforo = error.message;
         }
 
         setErrores(nuevosErrores);
+        setExito('');
+        if (Object.keys(nuevosErrores).length > 0) return;
 
-        if (Object.keys(nuevosErrores).length === 0) {
-            setMensajeExito('¡Inscripción registrada con éxito en el estado local!');
-            setCantidad(1);
-            setMotivo('');
-            if (inputRef.current) inputRef.current.focus();
-        } else {
-            setMensajeExito('');
+        try {
+            const inscripcion = crear({ eventoId: evento.id, usuario: user, fechaInscripcion: fecha });
+            setExito(`Inscripción ${inscripcion.codigo} registrada.`);
+            setCorreo('');
+            setFecha(hoy());
+            correoRef.current?.focus();
+        } catch (error) {
+            setErrores({ fecha: error.message });
         }
     };
 
     if (!user) {
-        return <div className="alert alert-warning">Debes iniciar sesión para inscribirte.</div>;
-    }
-
-    if (evento.estado !== 'disponible') {
-        return <div className="alert alert-danger">Este evento ya no acepta inscripciones.</div>;
+        return <div className="alert alert-warning">Debes <Link to="/login">iniciar sesión</Link> para inscribirte.</div>;
     }
 
     return (
         <div className="card shadow-sm mt-4">
             <div className="card-body">
-                <h5 className="card-title">Registrar Inscripción</h5>
-                {mensajeExito && <div className="alert alert-success">{mensajeExito}</div>}
-
-                <form onSubmit={manejarEnvio}>
+                <h5 className="card-title">Registrar inscripción</h5>
+                {exito && <div className="alert alert-success">{exito}</div>}
+                {errores.aforo && <div className="alert alert-danger">{errores.aforo}</div>}
+                <form onSubmit={enviar} noValidate>
                     <div className="mb-3">
-                        <label className="form-label">Cantidad de Entradas</label>
+                        <label className="form-label" htmlFor="correo-inscripcion">Correo institucional</label>
                         <input
-                            type="number"
-                            className={`form-control ${errores.cantidad ? 'is-invalid' : ''}`}
-                            ref={inputRef} /* Asignación del useRef */
-                            value={cantidad}
-                            onChange={(e) => setCantidad(Number(e.target.value))}
+                            id="correo-inscripcion"
+                            type="email"
+                            ref={correoRef}
+                            className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
+                            value={correo}
+                            onChange={(e) => setCorreo(e.target.value)}
                         />
-                        {/* Mostrar error debajo del campo */}
-                        {errores.cantidad && <div className="invalid-feedback">{errores.cantidad}</div>}
+                        {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
                     </div>
-
                     <div className="mb-3">
-                        <label className="form-label">Motivo (Opcional / Justificación)</label>
+                        <label className="form-label" htmlFor="fecha-inscripcion">Fecha de inscripción</label>
                         <input
-                            type="text"
-                            className={`form-control ${errores.motivo ? 'is-invalid' : ''}`}
-                            value={motivo}
-                            onChange={(e) => setMotivo(e.target.value)}
+                            id="fecha-inscripcion"
+                            type="date"
+                            className={`form-control ${errores.fecha ? 'is-invalid' : ''}`}
+                            value={fecha}
+                            onChange={(e) => setFecha(e.target.value)}
                         />
-                        {errores.motivo && <div className="invalid-feedback">{errores.motivo}</div>}
+                        {errores.fecha && <div className="invalid-feedback">{errores.fecha}</div>}
                     </div>
-
-                    <button type="submit" className="btn btn-primary w-100">
-                        Confirmar Reserva
-                    </button>
+                    <button type="submit" className="btn btn-primary w-100">Confirmar inscripción</button>
                 </form>
             </div>
         </div>

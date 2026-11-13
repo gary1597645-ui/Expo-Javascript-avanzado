@@ -67,12 +67,12 @@
   ],
   "eventos": [
     {
-      "id": 1,
-      "nombre": "Conferencia de JavaScript",
-      "capacidadMax": 5,
-      "fecha": "2026-12-10",
+      "nombre": "Conferencia de JavaScriptt",
       "lugar": "Auditorio Principal",
-      "descripcion": "Charla sobre JavaScript moderno y desarrollo web."
+      "fecha": "2026-12-10",
+      "capacidadMax": 5,
+      "descripcion": "Charla sobre JavaScript moderno y desarrollo web.",
+      "id": 1
     },
     {
       "id": 2,

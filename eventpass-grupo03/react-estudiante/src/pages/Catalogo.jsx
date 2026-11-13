@@ -1,29 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ListaEventos from '../components/ListaEventos';
 import db from '../data/db.json';
+import { InscripcionesContext } from '../context/InscripcionesContext';
+import { obtenerLugaresUnicos } from '../core/estadisticas.js';
 
 export default function Catalogo() {
-    // 1. Hook useEffect: Cumplimos con cambiar el título de la pestaña
     useEffect(() => {
-        document.title = 'Catálogo de Eventos - EventPass';
-    }, []); // El array vacío asegura que solo se ejecute al montar el componente
+        document.title = 'Catálogo de eventos - EventPass';
+    }, []);
 
-    // 2. Hook useState: Guardamos los criterios de búsqueda del usuario
+    const { inscripciones } = useContext(InscripcionesContext);
     const [filtroTexto, setFiltroTexto] = useState('');
-    const [filtroCategoria, setFiltroCategoria] = useState('');
+    const [filtroLugar, setFiltroLugar] = useState('');
+    const lugares = obtenerLugaresUnicos(db.eventos);
 
-    // 3. Lógica de filtrado
     const eventosFiltrados = db.eventos.filter((evento) => {
         const coincideTexto = evento.nombre.toLowerCase().includes(filtroTexto.toLowerCase());
-        const coincideCategoria = filtroCategoria === '' || evento.categoria === filtroCategoria;
-        return coincideTexto && coincideCategoria;
+        const coincideLugar = filtroLugar === '' || evento.lugar === filtroLugar;
+        return coincideTexto && coincideLugar;
     });
 
     return (
         <div>
-            <h2 className="mb-4">Catálogo de Eventos</h2>
-
-            {/* Controles de Filtro */}
+            <h2 className="mb-4">Catálogo de eventos</h2>
             <div className="row g-3">
                 <div className="col-md-8">
                     <input
@@ -37,18 +36,15 @@ export default function Catalogo() {
                 <div className="col-md-4">
                     <select
                         className="form-select"
-                        value={filtroCategoria}
-                        onChange={(e) => setFiltroCategoria(e.target.value)}
+                        value={filtroLugar}
+                        onChange={(e) => setFiltroLugar(e.target.value)}
                     >
-                        <option value="">Todas las categorías</option>
-                        <option value="Tecnología">Tecnología</option>
-                        <option value="Negocios">Negocios</option>
+                        <option value="">Todos los lugares</option>
+                        {lugares.map((lugar) => <option key={lugar} value={lugar}>{lugar}</option>)}
                     </select>
                 </div>
             </div>
-
-            {/* Componente que renderiza la lista pasándole los datos filtrados por props */}
-            <ListaEventos eventos={eventosFiltrados} />
+            <ListaEventos eventos={eventosFiltrados} inscripciones={inscripciones} />
         </div>
     );
 }

@@ -1,49 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import db from '../data/db.json';
 import BadgeEstado from '../components/BadgeEstado';
+import ContadorRegresivo from '../components/ContadorRegresivo';
+import { AuthContext } from '../context/AuthContext';
+import { InscripcionesContext } from '../context/InscripcionesContext';
 
 export default function MisInscripciones() {
-    const [inscripciones, setInscripciones] = useState([]);
+    const { user } = useContext(AuthContext);
+    const { inscripciones, cancelar } = useContext(InscripcionesContext);
+    const [fechaActual] = useState(() => new Date().toISOString().slice(0, 10));
 
     useEffect(() => {
-        // PROTECCIÓN: Si db.inscripciones no existe, intentará buscar db.reservas. 
-        // Si ninguno existe, usará un arreglo vacío [] para no romper la pantalla.
-        const datos = db.inscripciones || db.reservas || [];
-        setInscripciones(datos);
+        document.title = 'Mis inscripciones - EventPass';
     }, []);
+
+    const mias = inscripciones.filter((inscripcion) => inscripcion.estudianteId === user.id);
+    const buscarEvento = (id) => db.eventos.find((evento) => evento.id === id);
+    const proxima = mias
+        .filter((inscripcion) => inscripcion.estado === 'confirmada')
+        .map((inscripcion) => buscarEvento(inscripcion.eventoId))
+        .filter((evento) => evento && evento.fecha >= fechaActual)
+        .sort((a, b) => a.fecha.localeCompare(b.fecha))[0];
 
     return (
         <div>
-            <h2 className="mb-4">Mis Inscripciones</h2>
-
-            {inscripciones.length === 0 ? (
-                <div className="alert alert-info">
-                    No tienes inscripciones activas o no se encontró el arreglo correspondiente en el db.json.
-                </div>
+            <h2 className="mb-4">Mis inscripciones</h2>
+            {proxima && <ContadorRegresivo fecha={proxima.fecha} nombre={proxima.nombre} />}
+            {mias.length === 0 ? (
+                <div className="alert alert-info">Aún no tienes inscripciones.</div>
             ) : (
                 <div className="table-responsive">
                     <table className="table table-hover shadow-sm">
                         <thead className="table-light">
                             <tr>
                                 <th>Código</th>
-                                <th>Evento ID</th>
-                                <th>Fecha Solicitud</th>
+                                <th>Evento</th>
+                                <th>Fecha de inscripción</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {inscripciones.map((ins, index) => (
-                                // Usamos ins.id si existe, sino el index como key de respaldo
-                                <tr key={ins.id || index}>
+                            {mias.map((ins) => (
+                                <tr key={ins.id}>
                                     <td><strong>{ins.codigo}</strong></td>
-                                    {/* Soporte por si en tu json se llama eventoId o laboratorioId */}
-                                    <td>{ins.eventoId || ins.laboratorioId}</td>
-                                    {/* Soporte por si tiene la fecha de creación */}
-                                    <td>{ins.creadoEn ? ins.creadoEn.split('T')[0] : ins.fecha}</td>
-                                    <td><BadgeEstado estado={ins.estado || 'pendiente'} /></td>
+                                    <td>{buscarEvento(ins.eventoId)?.nombre ?? `Evento ${ins.eventoId}`}</td>
+                                    <td>{ins.fechaInscripcion}</td>
+                                    <td><BadgeEstado estado={ins.estado} /></td>
                                     <td>
-                                        <button className="btn btn-sm btn-outline-danger">Cancelar</button>
+                                        <button
+                                            className="btn btn-sm btn-outline-danger"
+                                            disabled={ins.estado === 'cancelada'}
+                                            onClick={() => cancelar(ins.id)}
+                                        >
+                                            Cancelar
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
