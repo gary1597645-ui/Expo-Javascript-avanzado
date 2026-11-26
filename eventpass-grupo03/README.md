@@ -55,4 +55,22 @@ npm run sync-core
 npm run dev
 ```
 
+## 5. Iniciar Kiosko de Disponibilidad (`vue-kiosko`)
+
+En otra terminal:
+
+```powershell
+cd vue-kiosko
+npm ci
+npm run sync-core
+npm run dev
+```
+
+## Iniciar next-publico
+```powershell
+cd next-publico
+npm ci
+npm run sync-core
+npm run dev
+```
 La colección de solicitudes para Postman está en `api-mock/eventpass-collection.json`.
