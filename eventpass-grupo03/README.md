@@ -22,6 +22,12 @@ npm run api
 
 La API queda disponible en `http://localhost:3000`, con recursos `/eventos` e `/inscripciones`.
 
+## Iniciar Core-js
+```powershell
+cd core-js
+node --test
+```
+
 ## Iniciar Angular
 
 En otra terminal:
@@ -39,6 +45,14 @@ Abre `http://localhost:4200`.
 ```powershell
 cd core-js
 node --test
+```
+
+## Iniciar React-Estudiante
+```powershell
+cd react-estudiante
+npm ci
+npm run sync-core
+npm run dev
 ```
 
 La colección de solicitudes para Postman está en `api-mock/eventpass-collection.json`.

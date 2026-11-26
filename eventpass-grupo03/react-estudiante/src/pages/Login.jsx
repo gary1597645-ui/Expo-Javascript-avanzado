@@ -6,6 +6,7 @@ export default function Login() {
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [cargando, setCargando] = useState(false);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -13,9 +14,14 @@ export default function Login() {
         document.title = 'Iniciar sesión - EventPass';
     }, []);
 
-    const manejarLogin = (e) => {
+    const manejarLogin = async (e) => {
         e.preventDefault();
-        const resultado = login(correo, password);
+        setError('');
+        setCargando(true);
+
+        const resultado = await login(correo, password);
+        setCargando(false);
+
         if (resultado.ok) {
             navigate('/catalogo');
         } else {
@@ -53,7 +59,9 @@ export default function Login() {
                                     required
                                 />
                             </div>
-                            <button type="submit" className="btn btn-primary w-100">Ingresar</button>
+                            <button type="submit" className="btn btn-primary w-100" disabled={cargando}>
+                                {cargando ? 'Verificando...' : 'Ingresar'}
+                            </button>
                         </form>
                         <p className="small text-muted mt-3 mb-0">Ejemplo: ana.torres@utp.edu.pe / est123</p>
                     </div>

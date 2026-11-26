@@ -9,9 +9,14 @@ export const contarInscripcionesPorEstado = (inscripciones) => {
 // 2. Aforo ocupado por evento con Map
 export const calcularAforoPorEvento = (inscripciones) => {
     const ocupacion = new Map();
-    inscripciones.filter(inscripcion => inscripcion.estado === 'confirmada').forEach(inscripcion => {
-        ocupacion.set(inscripcion.eventoId, (ocupacion.get(inscripcion.eventoId) || 0) + 1);
-    });
+    const estadosActivos = ['confirmada', 'aprobada', 'pendiente', 'en_espera'];
+
+    inscripciones
+        .filter((inscripcion) => estadosActivos.includes(inscripcion.estado))
+        .forEach((inscripcion) => {
+            const key = Number(inscripcion.eventoId);
+            ocupacion.set(key, (ocupacion.get(key) || 0) + 1);
+        });
     return ocupacion;
 };
 

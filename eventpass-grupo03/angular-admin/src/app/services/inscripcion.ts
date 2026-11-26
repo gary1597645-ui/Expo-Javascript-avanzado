@@ -12,4 +12,8 @@ export class InscripcionService {
     getInscripciones(): Observable<Inscripcion[]> {
         return this.http.get<Inscripcion[]>(this.apiUrl);
     }
+
+    actualizarEstado(id: number | string, estado: 'aprobada' | 'rechazada'): Observable<Inscripcion> {
+        return this.http.patch<Inscripcion>(`${this.apiUrl}/${id}`, { estado });
+    }
 }

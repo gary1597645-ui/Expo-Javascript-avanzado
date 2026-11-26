@@ -1,22 +1,66 @@
-import { useContext, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import db from '../data/db.json';
 import BadgeEstado from '../components/BadgeEstado';
 import FormularioInscripcion from '../components/FormularioInscripcion';
-import { InscripcionesContext } from '../context/InscripcionesContext';
+import { obtenerEventoPorId } from '../services/eventosFetch';
+import { listarTodasInscripciones } from '../services/inscripcionesAxios';
 import { calcularAforoPorEvento } from '../core/estadisticas.js';
 
 export default function EventoDetalle() {
     const { id } = useParams();
-    const { inscripciones } = useContext(InscripcionesContext);
-    const evento = db.eventos.find((item) => item.id === Number(id));
+    const [evento, setEvento] = useState(null);
+    const [inscripciones, setInscripciones] = useState([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(null);
+
+    const cargarDetalle = async () => {
+        setCargando(true);
+        setError(null);
+        try {
+            const [eventoData, inscripcionesData] = await Promise.all([
+                obtenerEventoPorId(id),
+                listarTodasInscripciones(),
+            ]);
+            setEvento(eventoData);
+            setInscripciones(inscripcionesData);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setCargando(false);
+        }
+    };
 
     useEffect(() => {
-        document.title = evento ? `${evento.nombre} - EventPass` : 'Evento no encontrado - EventPass';
+        cargarDetalle();
+    }, [id]);
+
+    useEffect(() => {
+        document.title = evento ? `${evento.nombre} - EventPass` : 'Detalle de evento - EventPass';
     }, [evento]);
 
+    if (cargando) {
+        return (
+            <div className="text-center my-5">
+                <div className="spinner-border text-primary" role="status" />
+                <p className="mt-2">Cargando detalle del evento...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="alert alert-danger">
+                {error} <Link to="/catalogo" className="alert-link ms-2">Volver al catálogo</Link>
+            </div>
+        );
+    }
+
     if (!evento) {
-        return <div className="alert alert-warning">Evento no encontrado. <Link to="/catalogo">Volver al catálogo</Link></div>;
+        return (
+            <div className="alert alert-warning">
+                Evento no encontrado. <Link to="/catalogo">Volver al catálogo</Link>
+            </div>
+        );
     }
 
     const inscritos = calcularAforoPorEvento(inscripciones).get(evento.id) || 0;
@@ -42,7 +86,7 @@ export default function EventoDetalle() {
                     <p><strong>Aforo:</strong> {inscritos} / {evento.capacidadMax}</p>
                 </div>
             </section>
-            <FormularioInscripcion evento={evento} />
+            <FormularioInscripcion evento={evento} onInscripcionCreada={cargarDetalle} />
         </div>
     );
 }

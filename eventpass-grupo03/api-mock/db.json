@@ -286,15 +286,6 @@
       "estado": "confirmada"
     },
     {
-      "id": 18,
-      "codigo": "INS-0018",
-      "eventoId": 6,
-      "estudianteId": 3,
-      "estudianteNombre": "Ana Torres",
-      "fechaInscripcion": "2026-11-18",
-      "estado": "en_espera"
-    },
-    {
       "id": 19,
       "codigo": "INS-0019",
       "eventoId": 7,
@@ -311,6 +302,42 @@
       "estudianteNombre": "Maria Gomez",
       "fechaInscripcion": "2026-11-20",
       "estado": "en_espera"
+    },
+    {
+      "codigo": "INS-8232",
+      "eventoId": 5,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "pendiente",
+      "creadoEn": "2026-11-25T22:04:18.232Z",
+      "id": 21
+    },
+    {
+      "codigo": "INS-3524",
+      "eventoId": 6,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "pendiente",
+      "creadoEn": "2026-11-25T22:08:43.524Z",
+      "id": 23
+    },
+    {
+      "codigo": "INS-5450",
+      "eventoId": 4,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "pendiente",
+      "creadoEn": "2026-11-25T22:08:45.450Z",
+      "id": 24
+    },
+    {
+      "codigo": "INS-4632",
+      "eventoId": 8,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "pendiente",
+      "creadoEn": "2026-11-25T22:16:44.632Z",
+      "id": 26
     }
   ]
 }
