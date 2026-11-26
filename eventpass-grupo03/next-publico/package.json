@@ -1,0 +1,21 @@
+{
+  "name": "next-publico",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "sync-core": "node -e \"require('node:fs').cpSync('../core-js','src/core',{recursive:true})\"",
+    "predev": "npm run sync-core",
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6"
+  }
+}

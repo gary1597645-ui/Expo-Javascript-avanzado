@@ -1,10 +1,10 @@
 export interface Inscripcion {
-    id?: number;
+    id?: number | string;
     codigo: string;
     eventoId: number;
     estudianteId: number;
     estudianteNombre?: string;
     eventoNombre?: string;
     fechaInscripcion: string;
-    estado: 'confirmada' | 'en_espera' | 'cancelada';
+    estado: 'pendiente' | 'aprobada' | 'rechazada' | 'confirmada' | 'en_espera' | 'cancelada';
 }

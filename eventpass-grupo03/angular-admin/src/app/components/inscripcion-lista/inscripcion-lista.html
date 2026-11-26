@@ -20,13 +20,13 @@
                 <td>{{ inscripcion.fechaInscripcion }}</td>
                 <td class="fw-bold">{{ inscripcion.estado | estadoInscripcion }}</td>
                 <td>
-                    <div *ngIf="inscripcion.estado === 'pendiente'" class="d-flex gap-2">
+                    <div *ngIf="inscripcion.estado === 'pendiente' && inscripcion.id != null" class="d-flex gap-2">
                         <button type="button" class="btn btn-success btn-sm"
-                            (click)="cambiarEstado(inscripcion.id, 'aprobada')">
+                            (click)="cambiarEstado(inscripcion.id!, 'aprobada')">
                             Aprobar
                         </button>
                         <button type="button" class="btn btn-danger btn-sm"
-                            (click)="cambiarEstado(inscripcion.id, 'rechazada')">
+                            (click)="cambiarEstado(inscripcion.id!, 'rechazada')">
                             Rechazar
                         </button>
                     </div>
