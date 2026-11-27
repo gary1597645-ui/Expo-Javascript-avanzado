@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { InscripcionesContext } from '../context/InscripcionesContext';
+import { useInscripciones } from '../hooks/useInscripciones';
 import { esCorreoUTP, esFecha } from '../core/validadores.js';
 import { Evento } from '../core/modelos.js';
 
@@ -13,18 +13,19 @@ const hoy = () => {
 
 export default function FormularioInscripcion({ evento }) {
     const { user } = useContext(AuthContext);
-    const { inscripciones, crear } = useContext(InscripcionesContext);
+    const { datos: inscripciones, crear } = useInscripciones(user?.id);
     const correoRef = useRef(null);
     const [correo, setCorreo] = useState(user?.correo ?? '');
     const [fecha, setFecha] = useState(hoy());
     const [errores, setErrores] = useState({});
     const [exito, setExito] = useState('');
+    const [enviando, setEnviando] = useState(false);
 
     useEffect(() => {
         correoRef.current?.focus();
     }, []);
 
-    const enviar = (e) => {
+    const enviar = async (e) => {
         e.preventDefault();
         const nuevosErrores = {};
         if (!esCorreoUTP(correo)) nuevosErrores.correo = 'Ingresa un correo @utp.edu.pe válido.';
@@ -56,13 +57,23 @@ export default function FormularioInscripcion({ evento }) {
         if (Object.keys(nuevosErrores).length > 0) return;
 
         try {
-            const inscripcion = crear({ eventoId: evento.id, usuario: user, fechaInscripcion: fecha });
-            setExito(`Inscripción ${inscripcion.codigo} registrada.`);
-            setCorreo('');
+            setEnviando(true);
+            const nueva = {
+                codigo: `INS-${String(Date.now()).slice(-4)}`,
+                eventoId: evento.id,
+                estudianteId: user.id,
+                fechaInscripcion: fecha,
+                estado: 'pendiente',
+                creadoEn: new Date().toISOString(),
+            };
+            const inscripcionCreada = await crear(nueva);
+            setExito(`Inscripción ${inscripcionCreada.codigo} registrada en el servidor.`);
             setFecha(hoy());
             correoRef.current?.focus();
         } catch (error) {
-            setErrores({ fecha: error.message });
+            setErrores({ aforo: error.message });
+        } finally {
+            setEnviando(false);
         }
     };
 
@@ -100,7 +111,9 @@ export default function FormularioInscripcion({ evento }) {
                         />
                         {errores.fecha && <div className="invalid-feedback">{errores.fecha}</div>}
                     </div>
-                    <button type="submit" className="btn btn-primary w-100">Confirmar inscripción</button>
+                    <button type="submit" className="btn btn-primary w-100" disabled={enviando}>
+                        {enviando ? 'Registrando...' : 'Confirmar inscripción'}
+                    </button>
                 </form>
             </div>
         </div>

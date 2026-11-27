@@ -36,6 +36,12 @@ Abre la dirección que muestra Vite (normalmente `http://localhost:5173`). El po
 
 En este avance, React usa sus datos locales y las inscripciones nuevas se mantienen en memoria mientras la aplicación está abierta. Todavía no se sincronizan con la API ni con el panel Angular.
 
+## Iniciar Core-js
+```powershell
+cd core-js
+node --test
+```
+
 ## Iniciar Angular
 
 En otra terminal:
@@ -55,4 +61,30 @@ cd core-js
 node --test
 ```
 
+## Iniciar React-Estudiante
+```powershell
+cd react-estudiante
+npm ci
+npm run sync-core
+npm run dev
+```
+
+## 5. Iniciar Kiosko de Disponibilidad (`vue-kiosko`)
+
+En otra terminal:
+
+```powershell
+cd vue-kiosko
+npm ci
+npm run sync-core
+npm run dev
+```
+
+## Iniciar next-publico
+```powershell
+cd next-publico
+npm ci
+npm run sync-core
+npm run dev
+```
 La colección de solicitudes para Postman está en `api-mock/eventpass-collection.json`.

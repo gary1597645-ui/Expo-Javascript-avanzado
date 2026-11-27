@@ -1,5 +1,8 @@
 export default function BadgeEstado({ estado }) {
     const estilos = {
+        pendiente: ['bg-warning text-dark', 'Pendiente'],
+        aprobada: ['bg-success', 'Aprobada'],
+        rechazada: ['bg-danger', 'Rechazada'],
         confirmada: ['bg-success', 'Confirmada'],
         en_espera: ['bg-warning text-dark', 'En espera'],
         cancelada: ['bg-danger', 'Cancelada'],

@@ -9,6 +9,7 @@
                 <th>Estudiante</th>
                 <th>Fecha de inscripción</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -18,9 +19,24 @@
                 <td>{{ inscripcion.estudianteNombre || 'Estudiante #' + inscripcion.estudianteId }}</td>
                 <td>{{ inscripcion.fechaInscripcion }}</td>
                 <td class="fw-bold">{{ inscripcion.estado | estadoInscripcion }}</td>
+                <td>
+                    <div *ngIf="inscripcion.estado === 'pendiente' && inscripcion.id != null" class="d-flex gap-2">
+                        <button type="button" class="btn btn-success btn-sm"
+                            (click)="cambiarEstado(inscripcion.id!, 'aprobada')">
+                            Aprobar
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm"
+                            (click)="cambiarEstado(inscripcion.id!, 'rechazada')">
+                            Rechazar
+                        </button>
+                    </div>
+                    <span *ngIf="inscripcion.estado !== 'pendiente'" class="text-muted small">
+                        Gestionada
+                    </span>
+                </td>
             </tr>
             <tr *ngIf="inscripciones.length === 0">
-                <td colspan="5" class="text-center py-4 text-muted">No hay inscripciones registradas.</td>
+                <td colspan="6" class="text-center py-4 text-muted">No hay inscripciones registradas.</td>
             </tr>
         </tbody>
     </table>
