@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useInscripciones } from '../hooks/useInscripciones';
 import { esCorreoUTP, esFecha } from '../core/validadores.js';
-import { Evento } from '../core/modelos.js';
-
+import { Evento, Inscripcion } from '../core/modelos.js';
 const hoy = () => {
     const fecha = new Date();
     fecha.setMinutes(fecha.getMinutes() - fecha.getTimezoneOffset());
     return fecha.toISOString().slice(0, 10);
 };
-
 export default function FormularioInscripcion({ evento }) {
     const { user } = useContext(AuthContext);
-    const { datos: inscripciones, crear } = useInscripciones(user?.id);
+    const { datos: inscripciones, todas, crear } = useInscripciones(user?.id, true);
     const correoRef = useRef(null);
     const [correo, setCorreo] = useState(user?.correo ?? '');
     const [fecha, setFecha] = useState(hoy());
@@ -39,12 +37,12 @@ export default function FormularioInscripcion({ evento }) {
 
         try {
             const eventoCore = new Evento(evento);
-            if (!eventoCore.tieneCupo(inscripciones)) {
+            if (!eventoCore.tieneCupo(todas)) {
                 nuevosErrores.aforo = 'El evento ya no tiene cupos disponibles.';
             } else if (inscripciones.some((inscripcion) => (
                 inscripcion.eventoId === evento.id
                 && inscripcion.estudianteId === user.id
-                && inscripcion.estado !== 'cancelada'
+                && !['cancelada', 'rechazada'].includes(inscripcion.estado)
             ))) {
                 nuevosErrores.aforo = 'Ya tienes una inscripción activa en este evento.';
             }
@@ -52,23 +50,32 @@ export default function FormularioInscripcion({ evento }) {
             nuevosErrores.aforo = error.message;
         }
 
-        setErrores(nuevosErrores);
-        setExito('');
+        setErrores(nuevosErrores); setExito('');
         if (Object.keys(nuevosErrores).length > 0) return;
 
         try {
             setEnviando(true);
-            const nueva = {
+            const inscripcion = new Inscripcion({
                 codigo: `INS-${String(Date.now()).slice(-4)}`,
                 eventoId: evento.id,
                 estudianteId: user.id,
+                estudianteNombre: user.nombre,
                 fechaInscripcion: fecha,
                 estado: 'pendiente',
+            });
+            const nueva = {
+                codigo: inscripcion.codigo,
+                eventoId: inscripcion.eventoId,
+                estudianteId: inscripcion.estudianteId,
+                estudianteNombre: inscripcion.estudianteNombre,
+                fechaInscripcion: inscripcion.fechaInscripcion,
+                estado: inscripcion.estado,
                 creadoEn: new Date().toISOString(),
             };
             const inscripcionCreada = await crear(nueva);
             setExito(`Inscripción ${inscripcionCreada.codigo} registrada en el servidor.`);
             setFecha(hoy());
+            setCorreo('');
             correoRef.current?.focus();
         } catch (error) {
             setErrores({ aforo: error.message });
@@ -90,25 +97,16 @@ export default function FormularioInscripcion({ evento }) {
                 <form onSubmit={enviar} noValidate>
                     <div className="mb-3">
                         <label className="form-label" htmlFor="correo-inscripcion">Correo institucional</label>
-                        <input
-                            id="correo-inscripcion"
-                            type="email"
-                            ref={correoRef}
+                        <input id="correo-inscripcion" type="email" ref={correoRef}
                             className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}
-                        />
+                            value={correo} onChange={(e) => setCorreo(e.target.value)} />
                         {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
                     </div>
                     <div className="mb-3">
                         <label className="form-label" htmlFor="fecha-inscripcion">Fecha de inscripción</label>
-                        <input
-                            id="fecha-inscripcion"
-                            type="date"
+                        <input id="fecha-inscripcion" type="date"
                             className={`form-control ${errores.fecha ? 'is-invalid' : ''}`}
-                            value={fecha}
-                            onChange={(e) => setFecha(e.target.value)}
-                        />
+                            value={fecha} onChange={(e) => setFecha(e.target.value)} />
                         {errores.fecha && <div className="invalid-feedback">{errores.fecha}</div>}
                     </div>
                     <button type="submit" className="btn btn-primary w-100" disabled={enviando}>

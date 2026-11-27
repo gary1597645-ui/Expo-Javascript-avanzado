@@ -4,5 +4,7 @@ export interface Evento {
     capacidadMax: number;
     fecha: string;
     lugar: string;
+    horaInicio?: string;
+    horaFin?: string;
     descripcion?: string;
 }

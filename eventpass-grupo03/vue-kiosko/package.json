@@ -7,6 +7,7 @@
     "sync-core": "node -e \"require('node:fs').cpSync('../core-js','src/core',{recursive:true})\"",
     "predev": "npm run sync-core",
     "dev": "vite --port 5174",
+    "prebuild": "npm run sync-core",
     "build": "vite build"
   },
   "dependencies": {

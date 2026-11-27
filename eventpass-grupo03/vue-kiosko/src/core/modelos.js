@@ -42,10 +42,11 @@ export class Evento {
     get descripcion() { return this._descripcion; }
 
     tieneCupo(inscripciones) {
-        const confirmadas = inscripciones.filter(inscripcion =>
-            inscripcion.eventoId === this.id && inscripcion.estado === 'confirmada'
+        const ocupanCupo = inscripciones.filter(inscripcion =>
+            inscripcion.eventoId === this.id &&
+            ['confirmada', 'aprobada'].includes(inscripcion.estado)
         ).length;
-        return confirmadas < this.capacidadMax;
+        return ocupanCupo < this.capacidadMax;
     }
 }
 
@@ -70,6 +71,6 @@ export class Inscripcion {
     get estado() { return this._estado; }
 
     ocupaCupo() {
-        return this.estado === 'confirmada';
+        return ['confirmada', 'aprobada'].includes(this.estado);
     }
 }

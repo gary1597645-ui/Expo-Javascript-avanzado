@@ -9,10 +9,10 @@ export const contarInscripcionesPorEstado = (inscripciones) => {
 // 2. Aforo ocupado por evento con Map
 export const calcularAforoPorEvento = (inscripciones) => {
     const ocupacion = new Map();
-    const estadosActivos = ['confirmada', 'aprobada', 'pendiente', 'en_espera'];
+    const estadosQueOcupanCupo = ['confirmada', 'aprobada'];
 
     inscripciones
-        .filter((inscripcion) => estadosActivos.includes(inscripcion.estado))
+        .filter((inscripcion) => estadosQueOcupanCupo.includes(inscripcion.estado))
         .forEach((inscripcion) => {
             const key = Number(inscripcion.eventoId);
             ocupacion.set(key, (ocupacion.get(key) || 0) + 1);
@@ -25,7 +25,7 @@ export const obtenerLugaresUnicos = (eventos) => {
     return [...new Set(eventos.map(evento => evento.lugar))];
 };
 
-// 4. Ranking por porcentaje de aforo confirmado
+// 4. Ranking por porcentaje de aforo ocupado
 export const rankingEventosPorAforo = (eventos, inscripciones) => {
     const aforoPorEvento = calcularAforoPorEvento(inscripciones);
     return [...eventos]
@@ -71,15 +71,15 @@ export const construirGrillaDisponibilidad = (eventos = [], inscripciones = [], 
         const celdas = horas.map((hora) => {
             // Si el evento tiene franja horaria (horaInicio/horaFin), se evalúa por hora; si no, aplica al día del evento
             const hNum = Number(hora.slice(0, 2));
-            const evIni = evento.horaInicio ? Number(evento.horaInicio.slice(0, 2)) : 8;
-            const evFin = evento.horaFin ? Number(evento.horaFin.slice(0, 2)) : 20;
+            const evIni = evento.horaInicio ? Number(evento.horaInicio.slice(0, 2)) : 7;
+            const evFin = evento.horaFin ? Number(evento.horaFin.slice(0, 2)) : 23;
             const dentroDeHorario = hNum >= evIni && hNum < evFin;
 
             let estado = 'libre';
             if (dentroDeHorario) {
                 if (aprobadas >= (evento.capacidadMax || 1)) {
                     estado = 'ocupada';
-                } else if (aprobadas > 0 || pendientes > 0) {
+                } else if (pendientes > 0) {
                     estado = 'pendiente';
                 }
             }

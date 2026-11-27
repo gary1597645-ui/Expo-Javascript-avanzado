@@ -10,7 +10,7 @@
 **Dominio:** EventPass (Eventos / Inscripciones / aforo)
 **Uso de IA:** Se utilizó IA como apoyo para revisar, adaptar y probar partes del código del proyecto.
 
-EventPass tiene dos aplicaciones: el portal del estudiante en React y el panel administrativo en Angular. La API usa `json-server`; la regla de aforo cuenta las inscripciones con estado `confirmada`.
+EventPass tiene cuatro frontends que consumen la misma API: portal de estudiante en React, panel administrativo en Angular, kiosko en Vue y portal público SSR en Next.js. La API usa `json-server`; para el aforo cuentan las inscripciones `confirmada` y `aprobada`.
 
 ## Iniciar la API
 
@@ -20,27 +20,7 @@ npm ci
 npm run api
 ```
 
-La API queda disponible en `http://localhost:3000`, con recursos `/eventos` e `/inscripciones`.
-
-## Iniciar el portal del estudiante (React)
-
-En otra terminal, desde la raíz del proyecto:
-
-```powershell
-cd react-estudiante
-npm ci
-npm run dev
-```
-
-Abre la dirección que muestra Vite (normalmente `http://localhost:5173`). El portal permite consultar eventos e inscribirse con una cuenta de estudiante de `api-mock/db.json`; por ejemplo, `ana.torres@utp.edu.pe` con contraseña `est123`.
-
-En este avance, React usa sus datos locales y las inscripciones nuevas se mantienen en memoria mientras la aplicación está abierta. Todavía no se sincronizan con la API ni con el panel Angular.
-
-## Iniciar Core-js
-```powershell
-cd core-js
-node --test
-```
+La API queda disponible en `http://localhost:3000`, con recursos `/eventos` e `/inscripciones`. Los horarios de evento son opcionales y se usan en la grilla de Vue; si faltan, se muestra disponibilidad durante todo el día.
 
 ## Iniciar Angular
 
@@ -60,6 +40,14 @@ Abre `http://localhost:4200`.
 cd core-js
 node --test
 ```
+
+## Uso de las librerías HTTP (avance 3)
+
+| Herramienta | Uso en EventPass |
+|---|---|
+| Fetch | Cargar el catálogo y el detalle público de eventos. |
+| Axios | Crear y cancelar inscripciones; el interceptor convierte fallos HTTP en mensajes. |
+| Alova | Consultar el resumen del estudiante, con caché GET de cinco minutos y actualización manual. |
 
 ## Iniciar React-Estudiante
 ```powershell
@@ -87,4 +75,14 @@ npm ci
 npm run sync-core
 npm run dev
 ```
+
+## Comparación de frameworks (avance 4)
+
+| Framework | Curva de aprendizaje observada | Manejo del estado | Enrutamiento | Renderizado |
+|---|---|---|---|---|
+| Angular | Más configuración inicial y uso de TypeScript. | Servicios, observables y formularios reactivos. | Angular Router con rutas para eventos e inscripciones. | SSR configurado; los datos se consultan con HttpClient. |
+| React | Requirió organizar hooks, Context y componentes. | `useState`, Context y el hook `useInscripciones`. | React Router con rutas protegidas y detalle dinámico. | SPA ejecutada en el cliente. |
+| Vue | La Composition API permitió agrupar datos y cálculos reactivos. | `ref` y `computed` en el kiosko. | Una vista principal sin router. | Aplicación Vite renderizada en el cliente. |
+| Next.js | Requirió distinguir componentes de servidor y rutas dinámicas. | Datos solicitados en el servidor con `fetch`. | App Router: catálogo, evento y consulta por código. | SSR dinámico con `cache: 'no-store'`. |
+
 La colección de solicitudes para Postman está en `api-mock/eventpass-collection.json`.

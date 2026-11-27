@@ -44,7 +44,8 @@ export class EventoLista implements OnInit {
 
   inscritosConfirmados(eventoId: number | undefined): number {
     return this.inscripciones.filter(inscripcion =>
-      inscripcion.eventoId === eventoId && inscripcion.estado === 'confirmada'
+      inscripcion.eventoId === eventoId &&
+      ['confirmada', 'aprobada'].includes(inscripcion.estado)
     ).length;
   }
 

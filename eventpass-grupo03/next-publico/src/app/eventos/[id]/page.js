@@ -9,10 +9,18 @@ async function getEventoDetalle(id) {
     if (!resEv.ok) return null;
     const evento = await resEv.json();
     const inscripciones = resIns.ok ? await resIns.json() : [];
-    const aprobadas = inscripciones.filter((i) =>
+    const aprobadasDelEvento = inscripciones.filter((i) =>
         ['confirmada', 'aprobada'].includes(i.estado)
     );
-    return { evento, aprobadas };
+    const fechaEvento = new Date(`${evento.fecha}T00:00:00`);
+    const inicioSemana = new Date();
+    inicioSemana.setHours(0, 0, 0, 0);
+    inicioSemana.setDate(inicioSemana.getDate() - ((inicioSemana.getDay() + 6) % 7));
+    const finSemana = new Date(inicioSemana);
+    finSemana.setDate(finSemana.getDate() + 7);
+    const eventoEstaSemana = fechaEvento >= inicioSemana && fechaEvento < finSemana;
+    const aprobadas = eventoEstaSemana ? aprobadasDelEvento : [];
+    return { evento, aprobadas, eventoEstaSemana };
 }
 
 export async function generateMetadata({ params }) {
@@ -32,7 +40,7 @@ export default async function EventoDetalleSSRPage({ params }) {
     const data = await getEventoDetalle(id);
     if (!data) notFound();
 
-    const { evento, aprobadas } = data;
+    const { evento, aprobadas, eventoEstaSemana } = data;
 
     return (
         <div>
@@ -51,7 +59,10 @@ export default async function EventoDetalleSSRPage({ params }) {
                 </div>
             </div>
 
-            <h4>Inscripciones aprobadas / confirmadas</h4>
+            <h4>Inscripciones aprobadas / confirmadas de esta semana</h4>
+            {!eventoEstaSemana && (
+                <p className="text-muted">Este evento no se realiza durante la semana actual.</p>
+            )}
             {aprobadas.length === 0 ? (
                 <div className="alert alert-info">Aún no hay inscripciones aprobadas para este evento.</div>
             ) : (

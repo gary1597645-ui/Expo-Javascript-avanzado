@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+export const metadata = {
+    title: 'No encontrado | EventPass',
+    description: 'El evento o inscripción solicitada no existe en EventPass.',
+};
+
 export default function NotFound() {
     return (
         <div className="alert alert-danger my-4">

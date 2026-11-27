@@ -67,12 +67,14 @@
   ],
   "eventos": [
     {
-      "id": 1,
-      "nombre": "Conferencia de JavaScript",
-      "capacidadMax": 5,
-      "fecha": "2026-12-10",
+      "nombre": "Conferencia de JavaScriptt",
       "lugar": "Auditorio Principal",
-      "descripcion": "Charla sobre JavaScript moderno y desarrollo web."
+      "fecha": "2026-12-10",
+      "capacidadMax": 5,
+      "descripcion": "Charla sobre JavaScript moderno y desarrollo web.",
+      "horaInicio": "09:00",
+      "horaFin": "11:00",
+      "id": 1
     },
     {
       "id": 2,
@@ -80,7 +82,9 @@
       "capacidadMax": 10,
       "fecha": "2026-12-12",
       "lugar": "Laboratorio de Informatica",
-      "descripcion": "Taller practico de componentes y servicios."
+      "descripcion": "Taller practico de componentes y servicios.",
+      "horaInicio": "14:00",
+      "horaFin": "17:00"
     },
     {
       "id": 3,
@@ -88,7 +92,9 @@
       "capacidadMax": 80,
       "fecha": "2026-12-15",
       "lugar": "Patio Central",
-      "descripcion": "Exhibicion de proyectos de estudiantes."
+      "descripcion": "Exhibicion de proyectos de estudiantes.",
+      "horaInicio": "10:00",
+      "horaFin": "13:00"
     },
     {
       "id": 4,
@@ -96,7 +102,9 @@
       "capacidadMax": 60,
       "fecha": "2026-12-18",
       "lugar": "Centro de convenciones",
-      "descripcion": "Encuentro para crear soluciones tecnologicas."
+      "descripcion": "Encuentro para crear soluciones tecnologicas.",
+      "horaInicio": "08:00",
+      "horaFin": "18:00"
     },
     {
       "id": 5,
@@ -104,7 +112,9 @@
       "capacidadMax": 50,
       "fecha": "2026-12-20",
       "lugar": "Auditorio Principal",
-      "descripcion": "Introduccion a la inteligencia artificial."
+      "descripcion": "Introduccion a la inteligencia artificial.",
+      "horaInicio": "17:00",
+      "horaFin": "19:00"
     },
     {
       "id": 6,
@@ -112,7 +122,9 @@
       "capacidadMax": 35,
       "fecha": "2026-12-22",
       "lugar": "Sala de Innovacion",
-      "descripcion": "Principios de diseno de experiencia de usuario."
+      "descripcion": "Principios de diseno de experiencia de usuario.",
+      "horaInicio": "09:00",
+      "horaFin": "12:00"
     },
     {
       "id": 7,
@@ -120,7 +132,9 @@
       "capacidadMax": 100,
       "fecha": "2026-12-27",
       "lugar": "Centro de convenciones",
-      "descripcion": "Ideas y experiencias de emprendimiento estudiantil."
+      "descripcion": "Ideas y experiencias de emprendimiento estudiantil.",
+      "horaInicio": "18:00",
+      "horaFin": "21:00"
     },
     {
       "id": 8,
@@ -128,7 +142,9 @@
       "capacidadMax": 40,
       "fecha": "2026-12-29",
       "lugar": "Laboratorio de Informatica",
-      "descripcion": "Practica de desarrollo de aplicaciones web."
+      "descripcion": "Practica de desarrollo de aplicaciones web.",
+      "horaInicio": "13:00",
+      "horaFin": "16:00"
     }
   ],
   "inscripciones": [
@@ -286,15 +302,6 @@
       "estado": "confirmada"
     },
     {
-      "id": 18,
-      "codigo": "INS-0018",
-      "eventoId": 6,
-      "estudianteId": 3,
-      "estudianteNombre": "Ana Torres",
-      "fechaInscripcion": "2026-11-18",
-      "estado": "en_espera"
-    },
-    {
       "id": 19,
       "codigo": "INS-0019",
       "eventoId": 7,
@@ -311,6 +318,42 @@
       "estudianteNombre": "Maria Gomez",
       "fechaInscripcion": "2026-11-20",
       "estado": "en_espera"
+    },
+    {
+      "codigo": "INS-8232",
+      "eventoId": 5,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "aprobada",
+      "creadoEn": "2026-11-25T22:04:18.232Z",
+      "id": 21
+    },
+    {
+      "codigo": "INS-3524",
+      "eventoId": 6,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "rechazada",
+      "creadoEn": "2026-11-25T22:08:43.524Z",
+      "id": 23
+    },
+    {
+      "codigo": "INS-5450",
+      "eventoId": 4,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "aprobada",
+      "creadoEn": "2026-11-25T22:08:45.450Z",
+      "id": 24
+    },
+    {
+      "codigo": "INS-4632",
+      "eventoId": 8,
+      "estudianteId": 3,
+      "fechaInscripcion": "2026-11-25",
+      "estado": "aprobada",
+      "creadoEn": "2026-11-25T22:16:44.632Z",
+      "id": 26
     }
   ]
 }

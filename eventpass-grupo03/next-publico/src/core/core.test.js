@@ -6,6 +6,7 @@ import {
     calcularAforoPorEvento,
     contarInscripcionesPorEstado,
     creadorGeneradorCodigo,
+    construirGrillaDisponibilidad,
     obtenerLugaresUnicos,
     rankingEventosPorAforo
 } from './estadisticas.js';
@@ -68,14 +69,18 @@ test('Evento permite inscripciones mientras haya aforo confirmado', () => {
     assert.equal(evento.tieneCupo(inscripciones), true);
 });
 
-test('Inscripcion ocupa cupo solo cuando esta confirmada', () => {
+test('Inscripcion ocupa cupo cuando esta confirmada o aprobada', () => {
     const confirmada = new Inscripcion({
         eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'confirmada'
+    });
+    const aprobada = new Inscripcion({
+        eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'aprobada'
     });
     const enEspera = new Inscripcion({
         eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'en_espera'
     });
     assert.equal(confirmada.ocupaCupo(), true);
+    assert.equal(aprobada.ocupaCupo(), true);
     assert.equal(enEspera.ocupaCupo(), false);
 });
 
@@ -83,7 +88,7 @@ test('Evento no permite nuevas inscripciones cuando el aforo esta completo', () 
     const evento = new Evento({ id: 1, nombre: 'Charla', capacidadMax: 2, fecha: '2026-12-01', lugar: 'Aula 1' });
     const inscripciones = [
         new Inscripcion({ eventoId: 1, fechaInscripcion: '2026-11-01', estado: 'confirmada' }),
-        new Inscripcion({ eventoId: 1, fechaInscripcion: '2026-11-02', estado: 'confirmada' })
+        new Inscripcion({ eventoId: 1, fechaInscripcion: '2026-11-02', estado: 'aprobada' })
     ];
     assert.equal(evento.tieneCupo(inscripciones), false);
 });
@@ -95,13 +100,15 @@ test('reduce cuenta las inscripciones por estado', () => {
     assert.deepEqual(resultado, { confirmada: 2, en_espera: 1 });
 });
 
-test('Map calcula solo inscripciones confirmadas por evento', () => {
+test('Map calcula las inscripciones confirmadas y aprobadas por evento', () => {
     const aforo = calcularAforoPorEvento([
         { eventoId: 1, estado: 'confirmada' },
+        { eventoId: 1, estado: 'aprobada' },
+        { eventoId: 1, estado: 'pendiente' },
         { eventoId: 1, estado: 'cancelada' },
         { eventoId: 2, estado: 'confirmada' }
     ]);
-    assert.equal(aforo.get(1), 1);
+    assert.equal(aforo.get(1), 2);
     assert.equal(aforo.get(2), 1);
 });
 
@@ -129,4 +136,19 @@ test('Generador crea codigos de inscripcion incrementales con padding', () => {
     const generar = creadorGeneradorCodigo();
     assert.equal(generar(), 'INS-0001');
     assert.equal(generar(), 'INS-0002');
+});
+
+test('Grilla respeta el horario del evento y refleja aforo completo', () => {
+    const { horas, filas } = construirGrillaDisponibilidad([
+        {
+            id: 1, nombre: 'Charla', fecha: '2026-12-01', lugar: 'Auditorio',
+            capacidadMax: 1, horaInicio: '09:00', horaFin: '11:00'
+        }
+    ], [{ eventoId: 1, estado: 'aprobada' }], 7, 22);
+
+    assert.equal(horas[0], '07:00');
+    assert.equal(horas.at(-1), '22:00');
+    assert.equal(filas[0].celdas[1].estado, 'libre');
+    assert.equal(filas[0].celdas[2].estado, 'ocupada');
+    assert.equal(filas[0].celdas[4].estado, 'libre');
 });

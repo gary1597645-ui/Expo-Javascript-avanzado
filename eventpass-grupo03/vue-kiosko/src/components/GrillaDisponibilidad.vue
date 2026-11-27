@@ -28,7 +28,13 @@ const emit = defineEmits(['ver-detalle']);
         <tr v-for="fila in filas" :key="fila.evento.id">
           <td>
             <div class="fw-bold">{{ fila.evento.nombre }}</div>
-            <small class="text-muted">{{ fila.evento.lugar }} ({{ fila.evento.fecha }})</small>
+            <small class="text-muted">
+              {{ fila.evento.lugar }} · {{ fila.evento.fecha }}
+              <span v-if="fila.evento.horaInicio && fila.evento.horaFin">
+                · {{ fila.evento.horaInicio }}–{{ fila.evento.horaFin }}
+              </span>
+              <span v-else>· Todo el día</span>
+            </small>
           </td>
           <CeldaHorario
             v-for="celda in fila.celdas"

@@ -6,6 +6,7 @@ import { construirGrillaDisponibilidad, obtenerLugaresUnicos } from './core/esta
 const eventos = ref([]);
 const inscripciones = ref([]);
 const lugarSeleccionado = ref('');
+const fechaSeleccionada = ref(new Date().toISOString().slice(0, 10));
 const celdaActiva = ref(null);
 const cargando = ref(true);
 const error = ref('');
@@ -23,6 +24,11 @@ const cargarDatos = async () => {
 
     eventos.value = await resEv.json();
     inscripciones.value = await resIns.json();
+    const fechas = [...new Set(eventos.value.map((evento) => evento.fecha))].sort();
+    if (!fechas.includes(fechaSeleccionada.value)) {
+      const hoy = new Date().toISOString().slice(0, 10);
+      fechaSeleccionada.value = fechas.find((fecha) => fecha >= hoy) || fechas[0] || hoy;
+    }
     ultimaActualizacion.value = new Date().toLocaleTimeString();
   } catch (err) {
     error.value = err.message;
@@ -41,11 +47,15 @@ onUnmounted(() => {
 });
 
 const lugares = computed(() => obtenerLugaresUnicos(eventos.value));
+const fechasDisponibles = computed(() =>
+  [...new Set(eventos.value.map((evento) => evento.fecha))].sort()
+);
 
 const eventosFiltrados = computed(() =>
-  lugarSeleccionado.value
-    ? eventos.value.filter((ev) => ev.lugar === lugarSeleccionado.value)
-    : eventos.value
+  eventos.value.filter((evento) =>
+    evento.fecha === fechaSeleccionada.value &&
+    (!lugarSeleccionado.value || evento.lugar === lugarSeleccionado.value)
+  )
 );
 
 const grilla = computed(() =>
@@ -58,9 +68,15 @@ const grilla = computed(() =>
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
       <div>
         <h2 class="mb-0 text-dark">EventPass — Kiosko de Disponibilidad en Vivo</h2>
-        <small class="text-muted">Actualización automática cada 30 s · Última: {{ ultimaActualizacion }}</small>
+        <small class="text-muted">
+          Disponibilidad del {{ fechaSeleccionada }} · Actualización cada 30 s · Última: {{ ultimaActualizacion }}
+        </small>
       </div>
       <div class="d-flex align-items-center gap-2">
+        <label for="fecha-eventos" class="form-label mb-0 fw-semibold">Fecha:</label>
+        <select id="fecha-eventos" v-model="fechaSeleccionada" class="form-select" style="width: 170px;">
+          <option v-for="fecha in fechasDisponibles" :key="fecha" :value="fecha">{{ fecha }}</option>
+        </select>
         <label class="form-label mb-0 fw-semibold">Filtrar por lugar:</label>
         <select v-model="lugarSeleccionado" class="form-select" style="width: 240px;">
           <option value="">Todos los lugares</option>
