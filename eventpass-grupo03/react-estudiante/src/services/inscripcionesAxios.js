@@ -6,7 +6,7 @@ const api = axios.create({
     timeout: 5000,
 });
 
-// Convierte errores de red y HTTP en mensajes claros para la interfaz.
+// Convierte errores de red y HTTP en mensajes claros para  el usuario.
 api.interceptors.response.use(
     (response) => response,
     (error) => {

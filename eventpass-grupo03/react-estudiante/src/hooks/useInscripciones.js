@@ -5,14 +5,14 @@ import {
     crearInscripcionApi,
     cancelarInscripcionApi,
 } from '../services/inscripcionesAxios';
-
+//2Recibe el ID del estudiante y devuelve los datos,el estado de carga, el error y las funciones.
 export const useInscripciones = (estudianteId, incluirTodas = false) => {
     const [datos, setDatos] = useState([]);
     const [todas, setTodas] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    // Centraliza la consulta y los estados de carga y error.
+    // . 1  Lo que hace es centralizar todas las operaciones de inscripciones: cargar, crear y cancelar.
     const cargar = useCallback(async (silencioso = false) => {
         if (!estudianteId) {
             setDatos([]);
@@ -22,7 +22,7 @@ export const useInscripciones = (estudianteId, incluirTodas = false) => {
         }
         if (!silencioso) setCargando(true);
         setError(null);
-
+//Así las páginas no llaman al API directamente, solo llaman al hook.
         try {
             const [lista, listaCompleta] = incluirTodas
                 ? await Promise.all([

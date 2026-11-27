@@ -4,7 +4,7 @@ import { contarInscripcionesPorEstado } from '../core/estadisticas.js';
 
 export function ResumenInscripciones({ usuarioId }) {
     const { loading, data, error, send } = useRequest(
-        () => getResumenInscripcionesMethod(usuarioId),
+        //que nos da tres cosas automáticamente: loading para cuando está cargando, error si algo falla, y data con los datos
         {
             initialData: [],
             immediate: Boolean(usuarioId),
