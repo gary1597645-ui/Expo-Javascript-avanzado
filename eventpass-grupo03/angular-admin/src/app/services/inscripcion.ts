@@ -13,6 +13,7 @@ export class InscripcionService {
         return this.http.get<Inscripcion[]>(this.apiUrl);
     }
 
+    // Actualiza el estado de una inscripción con PATCH.
     actualizarEstado(id: number | string, estado: 'aprobada' | 'rechazada'): Observable<Inscripcion> {
         return this.http.patch<Inscripcion>(`${this.apiUrl}/${id}`, { estado });
     }

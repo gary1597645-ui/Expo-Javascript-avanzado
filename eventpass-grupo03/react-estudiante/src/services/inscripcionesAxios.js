@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+// Reutiliza la URL base y el tiempo máximo de espera en las peticiones.
 const api = axios.create({
     baseURL: 'http://localhost:3000',
     timeout: 5000,
 });
 
+// Convierte errores de red y HTTP en mensajes claros para la interfaz.
 api.interceptors.response.use(
     (response) => response,
     (error) => {

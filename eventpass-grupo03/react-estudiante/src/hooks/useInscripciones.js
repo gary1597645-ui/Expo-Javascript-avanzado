@@ -12,6 +12,7 @@ export const useInscripciones = (estudianteId, incluirTodas = false) => {
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
+    // Centraliza la consulta y los estados de carga y error.
     const cargar = useCallback(async (silencioso = false) => {
         if (!estudianteId) {
             setDatos([]);
@@ -40,10 +41,12 @@ export const useInscripciones = (estudianteId, incluirTodas = false) => {
 
     useEffect(() => {
         cargar(false);
+        // Actualiza las inscripciones cada 15 segundos y limpia el intervalo al salir.
         const intervalo = setInterval(() => cargar(true), 15000);
         return () => clearInterval(intervalo);
     }, [cargar]);
 
+    // Expone acciones para crear o cancelar sin repetir lógica en las páginas.
     const crear = async (payload) => {
         const creada = await crearInscripcionApi(payload);
         setDatos((prev) => [...prev, creada]);

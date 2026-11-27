@@ -16,6 +16,7 @@ let intervalo = null;
 const cargarDatos = async () => {
   try {
     error.value = '';
+    // Consulta eventos e inscripciones en paralelo desde el API REST.
     const [resEv, resIns] = await Promise.all([
       fetch('http://localhost:3000/eventos'),
       fetch('http://localhost:3000/inscripciones'),
@@ -39,10 +40,12 @@ const cargarDatos = async () => {
 
 onMounted(() => {
   cargarDatos();
+  // Refresca la disponibilidad cada 30 segundos mientras la vista está activa.
   intervalo = setInterval(cargarDatos, 30000);
 });
 
 onUnmounted(() => {
+  // Detiene el refresco al salir de la vista.
   if (intervalo) clearInterval(intervalo);
 });
 
@@ -59,6 +62,7 @@ const eventosFiltrados = computed(() =>
 );
 
 const grilla = computed(() =>
+  // Usa la lógica compartida de core-js para calcular las celdas disponibles.
   construirGrillaDisponibilidad(eventosFiltrados.value, inscripciones.value, 7, 22)
 );
 </script>
@@ -74,6 +78,7 @@ const grilla = computed(() =>
       </div>
       <div class="d-flex align-items-center gap-2">
         <label for="fecha-eventos" class="form-label mb-0 fw-semibold">Fecha:</label>
+        <!-- v-model mantiene los filtros sincronizados con el estado de Vue. -->
         <select id="fecha-eventos" v-model="fechaSeleccionada" class="form-select" style="width: 170px;">
           <option v-for="fecha in fechasDisponibles" :key="fecha" :value="fecha">{{ fecha }}</option>
         </select>
@@ -90,6 +95,7 @@ const grilla = computed(() =>
     <div v-if="cargando" class="alert alert-info">Cargando disponibilidad del campus...</div>
     <div v-else-if="error" class="alert alert-danger">{{ error }}</div>
 
+    <!-- El evento del componente permite abrir el detalle de una celda. -->
     <GrillaDisponibilidad
       v-else
       :horas="grilla.horas"

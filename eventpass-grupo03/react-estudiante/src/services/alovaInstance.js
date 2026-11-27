@@ -2,6 +2,7 @@ import { createAlova } from 'alova';
 import adapterFetch from 'alova/fetch';
 import ReactHook from 'alova/react';
 
+// Configura Alova para consultar el API y manejar errores HTTP.
 export const alovaInstance = createAlova({
     baseURL: 'http://localhost:3000',
     statesHook: ReactHook,
@@ -14,5 +15,6 @@ export const alovaInstance = createAlova({
     },
 });
 
+// Crea la consulta del resumen de inscripciones de un estudiante.
 export const getResumenInscripcionesMethod = (estudianteId) =>
     alovaInstance.Get(`/inscripciones?estudianteId=${estudianteId}`);

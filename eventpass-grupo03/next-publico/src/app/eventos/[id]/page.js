@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 async function getEventoDetalle(id) {
+    // Carga el evento y sus inscripciones en el servidor para generar el detalle.
     const [resEv, resIns] = await Promise.all([
         fetch(`http://localhost:3000/eventos/${id}`, { cache: 'no-store' }),
         fetch(`http://localhost:3000/inscripciones?eventoId=${id}`, { cache: 'no-store' }),
@@ -24,6 +25,7 @@ async function getEventoDetalle(id) {
 }
 
 export async function generateMetadata({ params }) {
+    // Genera metadatos según el evento solicitado en la ruta dinámica.
     const { id } = await params;
     const data = await getEventoDetalle(id);
     if (!data) {

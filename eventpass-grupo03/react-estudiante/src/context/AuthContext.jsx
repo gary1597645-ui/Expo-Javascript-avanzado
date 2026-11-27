@@ -6,6 +6,7 @@ const STORAGE_KEY = 'eventpass_user';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
+        // Recupera la sesión guardada para mantenerla al recargar la página.
         const guardado = localStorage.getItem(STORAGE_KEY);
         return guardado ? JSON.parse(guardado) : null;
     });
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
+            // Busca el usuario en la API usando su correo institucional.
             const res = await fetch(
                 `http://localhost:3000/usuarios?correo=${encodeURIComponent(correoNormalizado)}`
             );
@@ -37,6 +39,7 @@ export const AuthProvider = ({ children }) => {
             const { id, nombre, rol } = encontrado;
             const sesion = { id, nombre, correo: encontrado.correo, rol };
             setUser(sesion);
+            // Guarda solo los datos de sesión necesarios en el navegador.
             localStorage.setItem(STORAGE_KEY, JSON.stringify(sesion));
             return { ok: true };
         } catch {

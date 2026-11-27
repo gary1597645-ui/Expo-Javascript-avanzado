@@ -1,11 +1,13 @@
 import Link from 'next/link';
 
 export const metadata = {
+    // Metadatos de esta página para el título y la descripción del navegador.
     title: 'Catálogo de Eventos | EventPass Público',
     description: 'Lista completa de eventos disponibles en el campus renderizada en el servidor.',
 };
 
 async function getEventos() {
+    // Obtiene el catálogo en el servidor y evita reutilizar datos antiguos.
     const res = await fetch('http://localhost:3000/eventos', { cache: 'no-store' });
     if (!res.ok) throw new Error('Error al obtener eventos');
     return res.json();

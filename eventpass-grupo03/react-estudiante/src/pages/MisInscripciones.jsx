@@ -41,7 +41,7 @@ export default function MisInscripciones() {
 
             {proxima && <ContadorRegresivo fecha={proxima.fecha} nombre={proxima.nombre} />}
 
-            {/* Estado 1: Cargando */}
+            {/* Muestra estados distintos para carga, error y lista vacía. */}
             {cargando && (
                 <div className="text-center my-4">
                     <div className="spinner-border text-primary" role="status" />

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 async function getInscripcionPorCodigo(codigo) {
+    // Busca una inscripción por código y luego consulta los datos de su evento.
     const res = await fetch(
         `http://localhost:3000/inscripciones?codigo=${encodeURIComponent(codigo)}`,
         { cache: 'no-store' }
@@ -19,6 +20,7 @@ async function getInscripcionPorCodigo(codigo) {
 }
 
 export async function generateMetadata({ params }) {
+    // Personaliza el título y la descripción con el código consultado.
     const { codigo } = await params;
     return {
         title: `Estado de Inscripción ${codigo} | EventPass`,
